@@ -4,13 +4,14 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 const galleryContainer = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 
-// Ініціалізуємо SimpleLightbox один раз поза функціями
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
 export function createGallery(images) {
+  if (!galleryContainer) return;
+
   const markup = images
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
@@ -19,10 +20,10 @@ export function createGallery(images) {
           <img class="gallery-image" src="${webformatURL}" alt="${tags}" />
         </a>
         <div class="info-container">
-          <div class="info-item"><b>Likes</b> <span>${likes}</span></div>
-          <div class="info-item"><b>Views</b> <span>${views}</span></div>
-          <div class="info-item"><b>Comments</b> <span>${comments}</span></div>
-          <div class="info-item"><b>Downloads</b> <span>${downloads}</span></div>
+          <div class="info-item"><b>Likes</b><span>${likes}</span></div>
+          <div class="info-item"><b>Views</b><span>${views}</span></div>
+          <div class="info-item"><b>Comments</b><span>${comments}</span></div>
+          <div class="info-item"><b>Downloads</b><span>${downloads}</span></div>
         </div>
       </li>
     `
@@ -30,19 +31,19 @@ export function createGallery(images) {
     .join('');
 
   galleryContainer.insertAdjacentHTML('beforeend', markup);
-  
-  // Обов'язково оновлюємо галерею для SimpleLightbox
   lightbox.refresh();
 }
 
 export function clearGallery() {
-  galleryContainer.innerHTML = '';
+  if (galleryContainer) {
+    galleryContainer.innerHTML = '';
+  }
 }
 
 export function showLoader() {
-  loader.classList.add('is-visible'); // Додайте стилі для відображення у CSS
+  if (loader) loader.classList.add('is-visible');
 }
 
 export function hideLoader() {
-  loader.classList.remove('is-visible');
+  if (loader) loader.classList.remove('is-visible');
 }

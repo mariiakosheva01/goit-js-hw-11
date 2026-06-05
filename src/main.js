@@ -2,12 +2,14 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-import { getImagesByQuery } from './js/pixabay-api.js';
+import { getImagesByQuery } from './js/pixabay.api.js';
 import { createGallery, clearGallery, showLoader, hideLoader } from './js/render-functions.js';
 
 const searchForm = document.querySelector('.form');
 
-searchForm.addEventListener('submit', handleSearch);
+if (searchForm) {
+  searchForm.addEventListener('submit', handleSearch);
+}
 
 function handleSearch(event) {
   event.preventDefault();
@@ -29,7 +31,6 @@ function handleSearch(event) {
 
   getImagesByQuery(searchQuery)
     .then(data => {
-      
       if (!data.hits || data.hits.length === 0) {
         iziToast.error({
           title: 'Error',
@@ -49,7 +50,6 @@ function handleSearch(event) {
       });
     })
     .finally(() => {
-      
       hideLoader();
       form.reset();
     });
